@@ -12,19 +12,24 @@ Repositório das atividades da disciplina de Paradigmas de Linguagens de Program
 
 
 
-├── README.md           
-├── aula-00/
-│   ├── README.md
-│   └── src/
-│       ├── ola_mundo.py
-│       └── tabuada.py
-├── aula-02/
-│   └── README.md
-├── aula-03/
-│   └── README.md
-├── aula-04/
-│   ├── README.md
-│   └── aula-exploratoria.pdf
-└── aula-05/
-    ├── README.md
-    └── exercicios.pdf
+        ├── README.md           
+        
+        ├── aula-00/
+        │   ├── README.md
+        │   └── src/
+        │       ├── ola_mundo.py
+        │       └── tabuada.py
+        
+        ├── aula-02/
+        │   └── README.md
+        
+        ├── aula-03/
+        │   └── README.md
+        ├── aula-04/
+
+       ├── README.md
+       └── aula-exploratoria.pdf
+       └── aula-05/
+
+        ├── README.md
+        └── exercicios.pdf
