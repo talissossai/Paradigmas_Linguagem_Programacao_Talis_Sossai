@@ -1,77 +1,182 @@
-# Paradigmas de Linguagens de Programação: Aula 02
+# Paradigmas de Linguagens de Programação: Atividade Aula 03
 
-## Evolução das principais linguagens de programação
+[← voltar ao índice do repositório](../README.md)
 
-Atividade baseada nos conceitos históricos do capítulo 2 de Sebesta.
+Atividade: **Derivação de um código a partir da gramática de uma linguagem de
+programação**.
 
-### 1. Genealogia das linguagens
+O objetivo é pesquisar a gramática formal de uma linguagem real, selecionar as
+regras necessárias e utilizá-las para derivar um pequeno programa válido.
 
-A evolução das linguagens não acontece em uma sequência onde uma sempre elimina a anterior. Linguagens diferentes continuam sendo usadas porque resolvem problemas diferentes.
+## 1. Fonte da gramática
 
-Dois fatores importantes são a **especialização por domínio** e o **custo de trocar sistemas antigos**.
-
-### 2. Plankalkül
-
-Plankalkül foi projetada por Konrad Zuse na década de 1940. Mesmo sem ter sido implementada de forma prática naquele período, é importante por antecipar ideias como estruturas de dados organizadas e arrays.
-
-### 3. Fortran
-
-Fortran foi criada principalmente para computação científica. Um desafio era mostrar que um compilador poderia gerar código eficiente o bastante para competir com código escrito manualmente.
-
-Ela aumentou muito a produtividade do programador sem abrir mão do desempenho necessário.
-
-### 4. Fortran x Lisp
-
-| Aspecto | Fortran | Lisp |
-|---|---|---|
-| Foco inicial | Cálculo científico | Manipulação simbólica e IA |
-| Dados | Números, vetores e matrizes | Listas e símbolos |
-| Estilo | Imperativo | Funcional e recursivo |
-
-### 5. ALGOL 60
-
-ALGOL 60 teve grande influência mesmo sem dominar comercialmente.
-
-Entre seus legados estão a descrição formal de gramáticas, o uso de blocos com escopo léxico e estruturas de controle que influenciaram a programação estruturada.
-
-### 6. COBOL e FLOW-MATIC
-
-COBOL foi desenvolvida pensando em processamento comercial e legibilidade. FLOW-MATIC, ligada a Grace Hopper, já tinha uma preocupação semelhante com comandos próximos da linguagem humana e com processamento de arquivos comerciais.
-
-### 7. Ada
-
-Ada foi projetada para sistemas em que confiabilidade é muito importante. Ela possui tipagem forte, modularidade, tratamento de exceções e recursos de concorrência, características úteis em sistemas embarcados e críticos.
-
-### 8. Smalltalk, C++ e Java
-
-**Smalltalk:** possui uma visão fortemente orientada a objetos.
-
-**C++:** adicionou orientação a objetos ao C, preservando muitos conceitos da linguagem original.
-
-**Java:** utiliza orientação a objetos, tipagem estática e JVM, favorecendo portabilidade.
-
-### 9. Linguagens de scripting
-
-| Linguagem | Destaque |
+| Item | Valor |
 |---|---|
-| Perl | Texto e administração de sistemas |
-| JavaScript | Scripts em páginas Web |
-| PHP | Aplicações Web no servidor |
-| Python | Uso geral e automação |
-| Ruby | Uso geral e Web |
-| Lua | Scripting embutido |
+| **Linguagem** | Python 3 |
+| **Gramática sintática** | <https://docs.python.org/3/reference/grammar.html> |
+| **Gramática léxica** | <https://docs.python.org/3/reference/lexical_analysis.html> |
+| **Notação sintática** | PEG |
+| **Notação léxica** | BNF modificada / EBNF |
 
-Elas compartilham a ideia de scripting em diferentes contextos, mas têm históricos, estruturas e formas de execução diferentes.
+### 1.1. Por que duas gramáticas?
 
-### 10. Escolha por domínio
+A gramática léxica trata da formação dos tokens, enquanto a gramática sintática
+trata da organização desses tokens em estruturas válidas.
 
-- **Computação científica:** Fortran ou Python com bibliotecas numéricas.
-- **Regras declarativas:** Prolog.
-- **Web interativa:** JavaScript.
-- **Firmware:** C ou Ada, de acordo com as exigências.
+Por exemplo, `total` pode ser reconhecido como um `NAME` e `14` como um `NUMBER`.
+Depois disso, a gramática sintática utiliza esses elementos para formar uma
+atribuição ou uma expressão.
 
-Um trade-off comum é **desempenho x abstração**, enquanto outro é **controle x produtividade**.
+### 1.2. Notação PEG
 
-## Referência
+Alguns símbolos importantes:
 
-SEBESTA, Robert W. *Concepts of Programming Languages*. Capítulo 2.
+```text
+e1 e2       sequência
+e1 | e2     escolha
+( e )       agrupamento
+[ e ]       opcional
+e*          zero ou mais ocorrências
+e+          uma ou mais ocorrências
+&e          lookahead positivo
+!e          lookahead negativo
+```
+
+`!e` e `&e` verificam a entrada sem consumi-la.
+
+---
+
+## 2. Produções selecionadas
+
+A atividade usa uma versão reduzida das regras oficiais para facilitar a
+visualização.
+
+### 2.1. Estrutura inicial
+
+```text
+file -> statement
+statement -> simple_stmt
+simple_stmt -> assignment
+```
+
+### 2.2. Atribuição
+
+```text
+assignment -> NAME '=' expression
+```
+
+### 2.3. Expressões
+
+```text
+expression -> term
+expression -> term '+' expression
+
+term -> factor
+term -> factor '*' term
+
+factor -> NUMBER
+```
+
+Essa organização coloca `*` em um nível mais interno que `+`, explicando a
+precedência da multiplicação.
+
+---
+
+## 3. Código escolhido
+
+```python
+total = 2 + 3 * 4
+```
+
+### 3.1. Tokens principais
+
+```text
+NAME('total')
+'='
+NUMBER('2')
+'+'
+NUMBER('3')
+'*'
+NUMBER('4')
+NEWLINE
+```
+
+---
+
+## 4. Derivação passo a passo
+
+Começando pelo símbolo inicial:
+
+```text
+file
+=> statement
+=> simple_stmt
+=> assignment
+=> NAME '=' expression
+=> total '=' expression
+```
+
+Agora a expressão:
+
+```text
+expression
+=> term '+' expression
+=> factor '+' expression
+=> NUMBER '+' expression
+=> 2 '+' expression
+```
+
+A segunda parte:
+
+```text
+expression
+=> term
+=> factor '*' term
+=> NUMBER '*' term
+=> 3 '*' factor
+=> 3 '*' NUMBER
+=> 3 '*' 4
+```
+
+Resultado completo:
+
+```text
+total = 2 + 3 * 4
+```
+
+---
+
+## 5. Resultado
+
+A expressão é interpretada como:
+
+```text
+2 + (3 * 4)
+```
+
+Logo:
+
+```text
+total = 14
+```
+
+A estrutura da gramática é o motivo de `3 * 4` ficar dentro de um nível mais
+profundo que a soma.
+
+---
+
+## 6. Conclusão
+
+A derivação mostra como um código aparentemente simples pode ser relacionado
+diretamente a regras formais.
+
+Os conceitos de terminal, não terminal e produção ajudam a entender como um
+parser reconhece uma entrada e como a gramática determina a estrutura de uma
+expressão.
+
+## Referências
+
+- Python Software Foundation. *The Python Language Reference*.
+- <https://docs.python.org/3/reference/grammar.html>
+- <https://docs.python.org/3/reference/lexical_analysis.html>
+- PEP 617: <https://peps.python.org/pep-0617/>
