@@ -10,7 +10,7 @@ Repositório das atividades da disciplina de Paradigmas de Linguagens de Program
 - [Aula 04](./aula-04/)
 - [Aula 05](./aula-05/)
 
-#Estrutura do repositório
+# Estrutura do repositório
 
         ├── README.md           
         
