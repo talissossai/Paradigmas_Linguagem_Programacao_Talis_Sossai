@@ -1,0 +1,1 @@
+# Paradigmas_Linguagem_Programacao_Talis_Sossai
