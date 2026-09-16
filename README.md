@@ -8,7 +8,6 @@ Repositório das atividades da disciplina de Paradigmas de Linguagens de Program
 - [Aula 02](./aula-02/)
 - [Aula 03](./aula-03/)
 - [Aula 04](./aula-04/)
-- [Aula 05](./aula-05/)
 
 # Estrutura do repositório
 
